@@ -1,1 +1,0 @@
-/Library/Developer/CommandLineTools/usr/bin/c++   -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/RunBug.dir/src/BugAlgorithms.o CMakeFiles/RunBug.dir/src/Graphics.o CMakeFiles/RunBug.dir/src/Simulator.o  -o bin/RunBug -framework OpenGL -framework OpenGL -framework GLUT 
