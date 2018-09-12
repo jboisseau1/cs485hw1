@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/jacob/Desktop/Courses/CS485/Project1Bug/BugCPP/src/BugAlgorithms.cpp
+BugAlgorithms.hpp
+/Users/jacob/Desktop/Courses/CS485/Project1Bug/BugCPP/src/BugAlgorithms.hpp
+
+/Users/jacob/Desktop/Courses/CS485/Project1Bug/BugCPP/src/BugAlgorithms.hpp
+Simulator.hpp
+/Users/jacob/Desktop/Courses/CS485/Project1Bug/BugCPP/src/Simulator.hpp
+
+/Users/jacob/Desktop/Courses/CS485/Project1Bug/BugCPP/src/Simulator.hpp
+cmath
+-
+cstdio
+-
+cstdlib
+-
+vector
+-
+
