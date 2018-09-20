@@ -153,6 +153,6 @@ double dx = (goalX - roboX);
 double dy = (goalY - roboY);
 double mag = sqrt(dx * dx + dy * dy);
 
-Move newMove ={(dx/mag)*0.06, (dy/mag)*0.06};
+Move newMove ={(dx/mag)*0.03, (dy/mag)*0.03};
 return newMove;
 }
