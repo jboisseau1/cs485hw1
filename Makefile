@@ -48,10 +48,10 @@ RM = /usr/local/Cellar/cmake/3.12.2/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/jacob/Desktop/Courses/CS485/Project1Bug/BugCPP
+CMAKE_SOURCE_DIR = "/Users/jprohaska3/Documents/GMU/Fall 2018/CS485/Project1Bug/cs485hw1"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/jacob/Desktop/Courses/CS485/Project1Bug/BugCPP
+CMAKE_BINARY_DIR = "/Users/jprohaska3/Documents/GMU/Fall 2018/CS485/Project1Bug/cs485hw1"
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/jacob/Desktop/Courses/CS485/Project1Bug/BugCPP/CMakeFiles /Users/jacob/Desktop/Courses/CS485/Project1Bug/BugCPP/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/jprohaska3/Documents/GMU/Fall 2018/CS485/Project1Bug/cs485hw1/CMakeFiles" "/Users/jprohaska3/Documents/GMU/Fall 2018/CS485/Project1Bug/cs485hw1/CMakeFiles/progress.marks"
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/jacob/Desktop/Courses/CS485/Project1Bug/BugCPP/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/jprohaska3/Documents/GMU/Fall 2018/CS485/Project1Bug/cs485hw1/CMakeFiles" 0
 .PHONY : all
 
 # The main clean target

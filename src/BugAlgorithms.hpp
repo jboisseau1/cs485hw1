@@ -56,6 +56,8 @@ public:
     Move Bug1(Sensor sensor);
     Move Bug2(Sensor sensor);
     Move MoveTowardsGoal();
+    Move MoveAroundObstacle(Sensor sensor);
+    double getSlope();
 
 protected:
     /**
@@ -74,6 +76,12 @@ protected:
 
     double m_hit[2], m_leave[2], m_distLeaveToGoal;
     int    m_mode;
+    //bug 2 data members
+    bool trackWall;
+    Sensor initialSensor;
+    Move goalMove;
+    double goalSlope;
+    double distanceToGoal;
 
 
     friend class Graphics;

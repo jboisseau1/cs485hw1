@@ -1,4 +1,4 @@
-# Install script for directory: /Users/jacob/Desktop/Courses/CS485/Project1Bug/BugCPP
+# Install script for directory: /Users/jprohaska3/Documents/GMU/Fall 2018/CS485/Project1Bug/cs485hw1
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/jacob/Desktop/Courses/CS485/Project1Bug/BugCPP/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/jprohaska3/Documents/GMU/Fall 2018/CS485/Project1Bug/cs485hw1/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
