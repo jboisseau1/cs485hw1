@@ -72,7 +72,7 @@ Move BugAlgorithms::Bug1(Sensor sensor)
 
 Move BugAlgorithms::Bug2(Sensor sensor)
 {
-  getchar(); //*****this makes it wait till enter is pressed
+  //getchar(); //*****this makes it wait till enter is pressed
   if(initial == false){
     goalSlope = getSlope();
     printf("goal slope%lf\n", goalSlope);
@@ -104,11 +104,12 @@ Move BugAlgorithms::Bug2(Sensor sensor)
     printf("new goalSlope %lf\n", getSlope());
     printf("goalSlope %lf\n", goalSlope);
     printf("%lf\n", m_simulator->GetDistanceFromRobotToGoal());//*/
+    printf("trackWall %d\n", trackWall);
     if(m_simulator->GetDistanceFromRobotToGoal() < 2.0){
       if( ( goalSlope - 0.1 <= getSlope() && goalSlope + 0.1 >= getSlope())  && trackWall == true/*initialSensor.m_dmin != 0.0*/ && distanceToGoal - 1 > m_simulator->GetDistanceFromRobotToGoal()){
         printf("In here extra\n" );
         trackWall = false;
-        initialSensor.m_dmin = 0;
+        //initialSensor.m_dmin = 0;
         distanceToGoal = m_simulator->GetDistanceFromRobotToGoal();
         return MoveTowardsGoal();
       }
