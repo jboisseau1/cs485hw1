@@ -78,6 +78,7 @@ protected:
     int    m_mode;
     //bug 2 data members
     bool trackWall;
+    bool initial;
     Sensor initialSensor;
     Move goalMove;
     double goalSlope;
