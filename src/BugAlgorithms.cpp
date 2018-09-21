@@ -99,7 +99,7 @@ Move BugAlgorithms::Bug2(Sensor sensor)
     printf("goalSlope %lf\n", goalSlope);
     printf("new goalSlope %lf\n", abs(getSlope()));
     printf("initial %lf\n", initialSensor.m_dmin);*/
-    else if( ( goalSlope - 0.005 <= abs(getSlope()) && goalSlope + 0.005 >= abs(getSlope()))  && initialSensor.m_dmin != 0.0 ){//&& distanceToGoal > m_simulator->GetDistanceFromRobotToGoal()){
+    else if( ( goalSlope - 0.005 <= abs(getSlope()) && goalSlope + 0.005 >= abs(getSlope()))  && initialSensor.m_dmin != 0.0 && distanceToGoal - 1 > m_simulator->GetDistanceFromRobotToGoal()){
       printf("In here\n" );
       trackWall = false;
       initialSensor.m_dmin = 0;
@@ -134,12 +134,32 @@ double BugAlgorithms::getSlope(){
 }
 
 Move BugAlgorithms::MoveAroundObstacle(Sensor sensor){
+/*Move oldD_min = {m_simulator -> GetRobotCenterX() - sensor.m_xmin, m_simulator -> GetRobotCenterY() - sensor.m_ymin};
+Move move_goal = MoveTowardsGoal();
+Move newD_min = {0,0};
+newD_min.m_dx = oldD_min.m_dx + move_goal.m_dx;
+newD_min.m_dy = oldD_min.m_dy + move_goal.m_dy;
+double magnitude_old = sqrt( oldD_min.m_dx * oldD_min.m_dx + oldD_min.m_dy * oldD_min.m_dy);
+// printf("d: %lf mag:%lf\n",sensor.m_dmin, magnitude_old );
+double magnitude_new = sqrt(newD_min.m_dx * newD_min.m_dx + newD_min.m_dy * newD_min.m_dy);*/
+
+
 
   double obsVectorX = sensor.m_xmin - m_simulator -> GetRobotCenterX();
   double obsVectorY = sensor.m_ymin - m_simulator -> GetRobotCenterY();
   double magnitude = sqrt(obsVectorX * obsVectorX + obsVectorY * obsVectorY);
   Move newMove = {(-obsVectorY/magnitude)*0.06, (obsVectorX/magnitude)*0.06};
 
+     /*if(magnitude_new < magnitude_old){ //always true...
+       printf("new: %lf d: %lf\n", magnitude_new, magnitude_old);
+       return newMove;
+     }
+     else if(sensor.m_dmin>=INNERSIZE){
+       printf("new: %lf d: %lf\n", magnitude_new, magnitude_old);
+       printf("IM CALLED\n");
+       return MoveTowardsGoal();
+     }*/
+  printf("move MoveAroundObstacle\n");
   return newMove;
 }
 
@@ -154,5 +174,6 @@ double dy = (goalY - roboY);
 double mag = sqrt(dx * dx + dy * dy);
 
 Move newMove ={(dx/mag)*0.03, (dy/mag)*0.03};
+printf("MoveTowardsGoal\n");
 return newMove;
 }
