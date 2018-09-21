@@ -66,7 +66,19 @@ Move BugAlgorithms::Bug1(Sensor sensor)
 {
     //add your implementation
     Move move ={0,0};
-
+    //Initial state will be towards-endpoint (initialize above not in this function)
+       //
+       //if bug is touching a wall and the current state is towards-endpoint (this means its the first time we have touched the wall)
+       //switch to follow outer state and store start point.
+       //
+       //if in outer state follow wall left keep track of distance to
+       //closest-to-end-point (increment some variable when it finds a closer point)
+       //
+       //once you reach original point switch to return-to-closest state and then turn in the direction
+       //that leads to the shorter path(compare current tracked path to path of the closest point).
+       //
+       //once you reach closest point move towards endpoint and then switch back to move towards-endpoint state.
+       //(you'll need to move before you switch back or else it will just follow the path again)
     return move;
 }
 
