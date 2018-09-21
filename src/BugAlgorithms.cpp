@@ -1,6 +1,6 @@
 #include "BugAlgorithms.hpp"
 #include <cmath>
-
+#include <cstdlib>
 #define BUMPERSIZE 0.8
 #define INNERSIZE 0.5
 #define MOVESIZE 0.06
@@ -71,7 +71,8 @@ Move BugAlgorithms::Bug1(Sensor sensor)
 
 Move BugAlgorithms::Bug2(Sensor sensor)
 {
-
+  //getchar(); //*****this makes it wait till enter is pressed
+  
     //add your implementation
     //Move move ={0,0};
   if(trackWall == false){
@@ -146,7 +147,7 @@ double magnitude_new = sqrt(newD_min.m_dx * newD_min.m_dx + newD_min.m_dy * newD
   double obsVectorX = sensor.m_xmin - m_simulator -> GetRobotCenterX();
   double obsVectorY = sensor.m_ymin - m_simulator -> GetRobotCenterY();
   double magnitude = sqrt(obsVectorX * obsVectorX + obsVectorY * obsVectorY);
-  Move newMove = {(-obsVectorY/magnitude)*0.06, (obsVectorX/magnitude)*0.06};
+  Move newMove = {(-obsVectorY/magnitude)*MOVESIZE, (obsVectorX/magnitude)*MOVESIZE};
 
      /*if(magnitude_new < magnitude_old){ //always true...
        printf("new: %lf d: %lf\n", magnitude_new, magnitude_old);
