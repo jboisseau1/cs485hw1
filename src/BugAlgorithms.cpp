@@ -40,7 +40,6 @@ Move newD_min = {0,0};
 newD_min.m_dx = oldD_min.m_dx + move_goal.m_dx;
 newD_min.m_dy = oldD_min.m_dy + move_goal.m_dy;
 double magnitude_old = sqrt( oldD_min.m_dx * oldD_min.m_dx + oldD_min.m_dy * oldD_min.m_dy);
-// printf("d: %lf mag:%lf\n",sensor.m_dmin, magnitude_old );
 double magnitude_new = sqrt(newD_min.m_dx * newD_min.m_dx + newD_min.m_dy * newD_min.m_dy);
  //hits an obstacle
  if(sensor.m_dmin <= BUMPERSIZE){
@@ -49,18 +48,15 @@ double magnitude_new = sqrt(newD_min.m_dx * newD_min.m_dx + newD_min.m_dy * newD
      double magnitude = sqrt(obsVectorX * obsVectorX + obsVectorY * obsVectorY);
      Move move = {(-obsVectorY/magnitude)*MOVESIZE, (obsVectorX/magnitude)*MOVESIZE};
      if(magnitude_new < magnitude_old){ //always true...
-       printf("new: %lf d: %lf\n", magnitude_new, magnitude_old);
+
        return move;
      }
      else if(sensor.m_dmin>=INNERSIZE){
-       printf("new: %lf d: %lf\n", magnitude_new, magnitude_old);
-       printf("IM CALLED\n");
        return MoveTowardsGoal();
      }
  }
 
  else{
-   // printf("moving to goal\n");
    return MoveTowardsGoal();
  }
 }
@@ -83,7 +79,7 @@ Move BugAlgorithms::Bug2(Sensor sensor)
   }
   //printf("new goalSlope %lf\n", abs(getSlope()));
   //printf("goalSlope %lf\n", goalSlope);
-  if(sensor.m_dmin <= 0.8 || trackWall == true){
+  if(sensor.m_dmin <= BUMPERSIZE || trackWall == true){
     if(initialSensor.m_dmin == 0.0){
       initialSensor.m_dmin = sensor.m_dmin;
       //initialSensor.m_xmin = sensor.m_xmin;
@@ -121,10 +117,12 @@ Move BugAlgorithms::Bug2(Sensor sensor)
       return MoveTowardsGoal();
     }*/
     else{
+      printf("move around\n" );
       return MoveAroundObstacle(sensor);
     }
   }
   else{
+    printf("Moving towards goal\n");
     return MoveTowardsGoal();
   }
 
@@ -173,7 +171,6 @@ double dx = (goalX - roboX);
 double dy = (goalY - roboY);
 double mag = sqrt(dx * dx + dy * dy);
 
-Move newMove ={(dx/mag)*0.03, (dy/mag)*0.03};
-printf("MoveTowardsGoal\n");
+Move newMove ={(dx/mag)*MOVESIZE, (dy/mag)*MOVESIZE};
 return newMove;
 }
