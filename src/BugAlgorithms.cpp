@@ -84,8 +84,8 @@ Move BugAlgorithms::Bug1(Sensor sensor)
 		m_leave[1] = m_simulator->GetRobotCenterY();
 
 		//Changed to Move around obstacle so it doesnt start digging.
+		moveCounter++;
 		return MoveAroundObstacle(sensor);
-
 
 
 	}
