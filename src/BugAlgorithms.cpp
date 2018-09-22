@@ -82,8 +82,8 @@ Move BugAlgorithms::Bug1(Sensor sensor)
 		m_leave[0] = m_simulator->GetRobotCenterX();
 		m_leave[1] = m_simulator->GetRobotCenterY();
 
-		//reason i return {0,0} move is to keep everything consistent. 
-		return move;
+		//Changed to Move around obstacle so it doesnt start digging.
+		return MoveAroundObstacle();
 
 	}
     //if in AROUND_AND_AWAY_FROM_HIT_POINT state follow wall left keep track of distance to
@@ -101,7 +101,7 @@ Move BugAlgorithms::Bug1(Sensor sensor)
 		
 		//check if the point is where we hit(within a threshold). if so switch to AROUND_AND_TOWARD_LEAVE_POINT 
 		//state and check which way to go based on sizes of moveCounter and LengthofPathToLeave.
-		if ((m_simulator->GetRobotCenterX() >= m_hit[0] - 0.05 && m_simulator->GetRobotCenterX() <= m_hit[0] + 0.05) && (m_simulator->GetRobotCenterY() >= m_hit[1] - 0.05 && m_simulator->GetRobotCenterY() <= m_hit[1] + 0.05)) {
+		if ((m_simulator->GetRobotCenterX() >= m_hit[0] - 0.04 && m_simulator->GetRobotCenterX() <= m_hit[0] + 0.04) && (m_simulator->GetRobotCenterY() >= m_hit[1] - 0.04 && m_simulator->GetRobotCenterY() <= m_hit[1] + 0.04)) {
 			m_mode = AROUND_AND_TOWARD_LEAVE_POINT;
 			if (lengthOfPathToLeave > moveCounter) {
 				goRight = true;
@@ -118,7 +118,7 @@ Move BugAlgorithms::Bug1(Sensor sensor)
 		
 		//if you hit the leave point switch to final mode (its for resetting variables and making sure we dont 
 		//catch the wall again
-		if ((m_simulator->GetRobotCenterX() >= m_leave[0] - 0.05 && m_simulator->GetRobotCenterX() <= m_leave[0] + 0.05) && (m_simulator->GetRobotCenterY() >= m_leave[1] - 0.05 && m_simulator->GetRobotCenterY() <= m_leave[1] + 0.05)) {
+		if ((m_simulator->GetRobotCenterX() >= m_leave[0] - 0.04 && m_simulator->GetRobotCenterX() <= m_leave[0] + 0.04) && (m_simulator->GetRobotCenterY() >= m_leave[1] - 0.04 && m_simulator->GetRobotCenterY() <= m_leave[1] + 0.04)) {
 			m_mode = STRAIGHT_AND_AWAY_FROM_LEAVE_POINT;
 			//no change to move means empty move
 		}
