@@ -15,12 +15,12 @@ BugAlgorithms::BugAlgorithms(Simulator * const simulator)
     m_hit[0] = m_hit[1] = HUGE_VAL;
     m_leave[0] = m_leave[1] = 0;
     m_distLeaveToGoal = HUGE_VAL;
-	
+
 	//vals for Bug1
 	moveCounter = 0;
 	lengthOfPathToLeave = 0;
 	goRight = false;
-	
+
     //vals for Bug2
     trackWall = false;
     initial = false;
@@ -83,16 +83,10 @@ Move BugAlgorithms::Bug1(Sensor sensor)
 		m_leave[0] = m_simulator->GetRobotCenterX();
 		m_leave[1] = m_simulator->GetRobotCenterY();
 
-<<<<<<< HEAD
-		//Changed to Move around obstacle so it doesnt start digging.
-		moveCounter++;
-		return MoveAroundObstacle();
-=======
-
 		//Changed to Move around obstacle so it doesnt start digging.
 		return MoveAroundObstacle(sensor);
 
->>>>>>> 2a38d79fbf882f944abac3cccb6f9ee333475ebd
+
 
 	}
     //if in AROUND_AND_AWAY_FROM_HIT_POINT state follow wall left keep track of distance to
