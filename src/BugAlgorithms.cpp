@@ -94,17 +94,22 @@ Move BugAlgorithms::Bug1(Sensor sensor)
 	else if (m_mode == AROUND_AND_AWAY_FROM_HIT_POINT) {
 		//checks to see if its currently closer than the closest point(m_leave) stores whats in the
 		//moveCounter into lengthOfPathToLeave and then resets the counter.
-		if (m_simulator->GetDistanceFromRobotToGoal() > distanceToGoal) {
+    printf("%lf\n", distanceToGoal );
+		if (m_simulator->GetDistanceFromRobotToGoal() > distanceToGoal) { //***doesnt let count run...thinks it is done once it hits p1
 			distanceToGoal = m_simulator->GetDistanceFromRobotToGoal();
 			lengthOfPathToLeave += moveCounter;
 			moveCounter = 0;
 			m_leave[0] = m_simulator->GetRobotCenterX();
 			m_leave[1] = m_simulator->GetRobotCenterY();
 		}
-
+    printf("%d\n",moveCounter);
 		//check if the point is where we hit(within a threshold). if so switch to AROUND_AND_TOWARD_LEAVE_POINT
 		//state and check which way to go based on sizes of moveCounter and LengthofPathToLeave.
-		if ((m_simulator->GetRobotCenterX() >= m_hit[0] - 0.04 && m_simulator->GetRobotCenterX() <= m_hit[0] + 0.04) && (m_simulator->GetRobotCenterY() >= m_hit[1] - 0.04 && m_simulator->GetRobotCenterY() <= m_hit[1] + 0.04)) {
+    double hit_p_m = 0.05;
+		if ((m_simulator->GetRobotCenterX() >= (m_hit[0] - hit_p_m) && m_simulator->GetRobotCenterX() <= (m_hit[0] + hit_p_m)) &&
+    (m_simulator->GetRobotCenterY() >= (m_hit[1] - hit_p_m) && m_simulator->GetRobotCenterY() <= (m_hit[1] + hit_p_m))) {
+      printf("im called\n");
+      getchar();
 			m_mode = AROUND_AND_TOWARD_LEAVE_POINT;
 			if (lengthOfPathToLeave > moveCounter) {
 				goRight = true;
@@ -117,13 +122,16 @@ Move BugAlgorithms::Bug1(Sensor sensor)
 	}
 	//once you start heading for leave point
 	else if(m_mode == AROUND_AND_TOWARD_LEAVE_POINT){
-
-
+    double leave_p_m = 0.04;
+    printf("now me\n");
 		//if you hit the leave point switch to final mode (its for resetting variables and making sure we dont
 		//catch the wall again
-		if ((m_simulator->GetRobotCenterX() >= m_leave[0] - 0.04 && m_simulator->GetRobotCenterX() <= m_leave[0] + 0.04) && (m_simulator->GetRobotCenterY() >= m_leave[1] - 0.04 && m_simulator->GetRobotCenterY() <= m_leave[1] + 0.04)) {
+		if ((m_simulator->GetRobotCenterX() >= m_leave[0] - leave_p_m && m_simulator->GetRobotCenterX() <= m_leave[0] + leave_p_m) &&
+    (m_simulator->GetRobotCenterY() >= m_leave[1] - leave_p_m && m_simulator->GetRobotCenterY() <= m_leave[1] + leave_p_m)) {
 			m_mode = STRAIGHT_AND_AWAY_FROM_LEAVE_POINT;
 			//no change to move means empty move
+      printf("switching\n");
+      getchar();
 		}
 		//keeps direction with goRight bool (just switches the sign on the movement)
 		if (goRight) {
@@ -259,7 +267,7 @@ double magnitude_new = sqrt(newD_min.m_dx * newD_min.m_dx + newD_min.m_dy * newD
        printf("IM CALLED\n");
        return MoveTowardsGoal();
      }*/
-  printf("move MoveAroundObstacle\n");
+  // printf("move MoveAroundObstacle\n");
   return newMove;
 }
 
