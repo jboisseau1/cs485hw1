@@ -67,10 +67,6 @@ Move BugAlgorithms::Bug1(Sensor sensor)
     //dont remove the move init
     Move move ={0,0};
 
-    //Initial state will be STRAIGHT (initialize above not in this function)
-    if(m_mode == STRAIGHT){
-		return MoveTowardsGoal();
-	}
     //if bug is touching a wall and the current state is STRAIGHT (this means its the first time we have touched the wall)
     //switch to AROUND_AND_AWAY_FROM_HIT_POINT state and store start point. Also hit point is initial leave point
 	if (sensor.m_dmin < BUMPERSIZE && m_mode == STRAIGHT) {
@@ -82,14 +78,19 @@ Move BugAlgorithms::Bug1(Sensor sensor)
 		m_leave[0] = m_simulator->GetRobotCenterX();
 		m_leave[1] = m_simulator->GetRobotCenterY();
 
+<<<<<<< HEAD
 		//Changed to Move around obstacle so it doesnt start digging.
 		return MoveAroundObstacle();
+=======
+		//reason i return {0,0} move is to keep everything consistent.
+		return move;
+>>>>>>> origin
 
 	}
     //if in AROUND_AND_AWAY_FROM_HIT_POINT state follow wall left keep track of distance to
     //m_leave (increment lengthOfPathToLeave when it finds a closer point)
-	else if (m_mode = AROUND_AND_AWAY_FROM_HIT_POINT) {
-		//checks to see if its currently closer than the closest point(m_leave) stores whats in the 
+	else if (m_mode == AROUND_AND_AWAY_FROM_HIT_POINT) {
+		//checks to see if its currently closer than the closest point(m_leave) stores whats in the
 		//moveCounter into lengthOfPathToLeave and then resets the counter.
 		if (m_simulator->GetDistanceFromRobotToGoal() > distanceToGoal) {
 			distanceToGoal = m_simulator->GetDistanceFromRobotToGoal();
@@ -98,8 +99,8 @@ Move BugAlgorithms::Bug1(Sensor sensor)
 			m_leave[0] = m_simulator->GetRobotCenterX();
 			m_leave[1] = m_simulator->GetRobotCenterY();
 		}
-		
-		//check if the point is where we hit(within a threshold). if so switch to AROUND_AND_TOWARD_LEAVE_POINT 
+
+		//check if the point is where we hit(within a threshold). if so switch to AROUND_AND_TOWARD_LEAVE_POINT
 		//state and check which way to go based on sizes of moveCounter and LengthofPathToLeave.
 		if ((m_simulator->GetRobotCenterX() >= m_hit[0] - 0.04 && m_simulator->GetRobotCenterX() <= m_hit[0] + 0.04) && (m_simulator->GetRobotCenterY() >= m_hit[1] - 0.04 && m_simulator->GetRobotCenterY() <= m_hit[1] + 0.04)) {
 			m_mode = AROUND_AND_TOWARD_LEAVE_POINT;
@@ -112,11 +113,11 @@ Move BugAlgorithms::Bug1(Sensor sensor)
 		moveCounter++;
 		return MoveAroundObstacle(sensor);
 	}
-	//once you start heading for leave point 
-	else if(m_mode = AROUND_AND_TOWARD_LEAVE_POINT){
-		
-		
-		//if you hit the leave point switch to final mode (its for resetting variables and making sure we dont 
+	//once you start heading for leave point
+	else if(m_mode == AROUND_AND_TOWARD_LEAVE_POINT){
+
+
+		//if you hit the leave point switch to final mode (its for resetting variables and making sure we dont
 		//catch the wall again
 		if ((m_simulator->GetRobotCenterX() >= m_leave[0] - 0.04 && m_simulator->GetRobotCenterX() <= m_leave[0] + 0.04) && (m_simulator->GetRobotCenterY() >= m_leave[1] - 0.04 && m_simulator->GetRobotCenterY() <= m_leave[1] + 0.04)) {
 			m_mode = STRAIGHT_AND_AWAY_FROM_LEAVE_POINT;
@@ -133,7 +134,7 @@ Move BugAlgorithms::Bug1(Sensor sensor)
 		return move;
 	}
 	//resetting stuff and officially leaving the obstacle
-	else if (m_mode = STRAIGHT_AND_AWAY_FROM_LEAVE_POINT) {
+	else if (m_mode == STRAIGHT_AND_AWAY_FROM_LEAVE_POINT) {
 		m_mode = STRAIGHT;
 		m_hit[0] = HUGE_VAL;
 		m_hit[1] = HUGE_VAL;
@@ -142,7 +143,11 @@ Move BugAlgorithms::Bug1(Sensor sensor)
 		goRight = false;
 		return MoveTowardsGoal();
 	}
-        
+  //Initial state will be STRAIGHT (initialize above not in this function)
+else{
+  return MoveTowardsGoal();
+}
+
     return move;
 }
 
