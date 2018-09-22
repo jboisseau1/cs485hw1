@@ -78,13 +78,10 @@ Move BugAlgorithms::Bug1(Sensor sensor)
 		m_leave[0] = m_simulator->GetRobotCenterX();
 		m_leave[1] = m_simulator->GetRobotCenterY();
 
-<<<<<<< HEAD
+
 		//Changed to Move around obstacle so it doesnt start digging.
-		return MoveAroundObstacle();
-=======
-		//reason i return {0,0} move is to keep everything consistent.
-		return move;
->>>>>>> origin
+		return MoveAroundObstacle(sensor);
+
 
 	}
     //if in AROUND_AND_AWAY_FROM_HIT_POINT state follow wall left keep track of distance to
