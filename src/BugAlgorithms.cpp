@@ -68,7 +68,9 @@ Move BugAlgorithms::Bug1(Sensor sensor)
     Move move ={0,0};
 
     //Initial state will be STRAIGHT (initialize above not in this function)
-    
+    if(m_mode == STRAIGHT){
+		return MoveTowardsGoal();
+	}
     //if bug is touching a wall and the current state is STRAIGHT (this means its the first time we have touched the wall)
     //switch to AROUND_AND_AWAY_FROM_HIT_POINT state and store start point. Also hit point is initial leave point
 	if (sensor.m_dmin < BUMPERSIZE && m_mode == STRAIGHT) {
