@@ -83,6 +83,7 @@ protected:
     Move goalMove;
     double goalSlope;
     double distanceToGoal;
+    double distanceToOb;
 	int moveCounter;
 	int lengthOfPathToLeave;
 	bool goRight;

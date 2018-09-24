@@ -20,6 +20,7 @@ BugAlgorithms::BugAlgorithms(Simulator * const simulator)
 	moveCounter = 0;
 	lengthOfPathToLeave = 0;
 	goRight = false;
+  distanceToOb = 0.0;
 
     //vals for Bug2
     trackWall = false;
@@ -85,30 +86,40 @@ Move BugAlgorithms::Bug1(Sensor sensor)
 
 		//Changed to Move around obstacle so it doesnt start digging.
 		moveCounter++;
-		return MoveAroundObstacle(sensor);
+		move = MoveAroundObstacle(sensor);
+    move.m_dx = move.m_dx * 2;
+    move.m_dy = move.m_dy * 2;
 
+    distanceToOb = sensor.m_dmin;
+
+    return move;
 
 	}
     //if in AROUND_AND_AWAY_FROM_HIT_POINT state follow wall left keep track of distance to
     //m_leave (increment lengthOfPathToLeave when it finds a closer point)
 	else if (m_mode == AROUND_AND_AWAY_FROM_HIT_POINT) {
+
 		//checks to see if its currently closer than the closest point(m_leave) stores whats in the
 		//moveCounter into lengthOfPathToLeave and then resets the counter.
-    printf("%lf\n", distanceToGoal );
+
 		if (m_simulator->GetDistanceFromRobotToGoal() < distanceToGoal) {
 			distanceToGoal = m_simulator->GetDistanceFromRobotToGoal();
-			lengthOfPathToLeave = moveCounter;
+			lengthOfPathToLeave += moveCounter;
+      moveCounter++;
 			m_leave[0] = m_simulator->GetRobotCenterX();
 			m_leave[1] = m_simulator->GetRobotCenterY();
 		}
-    printf("%lf\n",m_leave[0]);
+
 		//check if the point is where we hit(within a threshold). if so switch to AROUND_AND_TOWARD_LEAVE_POINT
 		//state and check which way to go based on sizes of moveCounter and LengthofPathToLeave.
-    double hit_p_m = 0.045;
+    double hit_p_m = 0.08;
+    printf("Rx: %lf Hx: %lf\n", m_simulator->GetRobotCenterX(), m_hit[0]);
+    printf("Ry: %lf Hy: %lf\n", m_simulator->GetRobotCenterY(), m_hit[1]);
+    printf("dist to ob: %lf\n", sensor.m_dmin);
+    // getchar();
     //***true when first hit...
 		if (((m_simulator->GetRobotCenterX() >= (m_hit[0] - hit_p_m) && m_simulator->GetRobotCenterX() <= (m_hit[0] + hit_p_m)) &&
     (m_simulator->GetRobotCenterY() >= (m_hit[1] - hit_p_m) && m_simulator->GetRobotCenterY() <= (m_hit[1] + hit_p_m)))) {
-      printf("R: %lf H: %lf\n", m_simulator->GetRobotCenterX(), m_hit[0]);
       getchar();
 
 			m_mode = AROUND_AND_TOWARD_LEAVE_POINT;
@@ -119,11 +130,25 @@ Move BugAlgorithms::Bug1(Sensor sensor)
 			return move;
 		}
 		moveCounter++;
-		return MoveAroundObstacle(sensor);
+    move = MoveAroundObstacle(sensor);
+    if(distanceToOb < sensor.m_dmin){
+      double diff = sensor.m_dmin - distanceToOb;
+      if(!goRight){
+        Move vectorToObj = {sensor.m_xmin - m_simulator -> GetRobotCenterX(),  sensor.m_ymin - m_simulator -> GetRobotCenterY()};
+        double mag = sqrt((vectorToObj.m_dx*vectorToObj.m_dx) + (vectorToObj.m_dy*vectorToObj.m_dy));
+        vectorToObj.m_dx = (vectorToObj.m_dx/mag)*diff;
+        vectorToObj.m_dy = (vectorToObj.m_dy/mag)*diff;
+
+        move.m_dx = move.m_dx + vectorToObj.m_dx;
+        move.m_dy = move.m_dy + vectorToObj.m_dy;
+      }
+
+    }
+		return move;
 	}
 	//once you start heading for leave point
 	else if(m_mode == AROUND_AND_TOWARD_LEAVE_POINT){
-    double leave_p_m = 0.05;
+    double leave_p_m = 0.045;
     printf("now me\n");
 		//if you hit the leave point switch to final mode (its for resetting variables and making sure we dont
 		//catch the wall again
@@ -138,6 +163,7 @@ Move BugAlgorithms::Bug1(Sensor sensor)
 		if (goRight) {
 			move = MoveAroundObstacle(sensor);
 			move.m_dx = move.m_dx * -1;
+      move.m_dy = move.m_dy * -1;
 		}
 		else{
 			move = MoveAroundObstacle(sensor);
