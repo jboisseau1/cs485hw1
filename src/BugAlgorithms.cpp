@@ -95,7 +95,7 @@ Move BugAlgorithms::Bug1(Sensor sensor)
 		//checks to see if its currently closer than the closest point(m_leave) stores whats in the
 		//moveCounter into lengthOfPathToLeave and then resets the counter.
     printf("%lf\n", distanceToGoal );
-		if (m_simulator->GetDistanceFromRobotToGoal() > distanceToGoal) { //***doesnt let count run...thinks it is done once it hits p1
+		if (m_simulator->GetDistanceFromRobotToGoal() < distanceToGoal) { //***doesnt let count run...thinks it is done once it hits p1
 			distanceToGoal = m_simulator->GetDistanceFromRobotToGoal();
 			lengthOfPathToLeave += moveCounter;
 			moveCounter = 0;
