@@ -57,6 +57,7 @@ public:
     Move Bug2(Sensor sensor);
     Move MoveTowardsGoal();
     Move MoveAroundObstacle(Sensor sensor);
+    Move MoveAroundObstacleAdjust(Sensor sensor);
     double getSlope();
 
 protected:

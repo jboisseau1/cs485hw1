@@ -227,13 +227,15 @@ Move BugAlgorithms::Bug2(Sensor sensor)
   if(sensor.m_dmin <= BUMPERSIZE || trackWall == true){
     //if first hit then set up initial values
     if(trackWall == false){
+      distanceToOb = sensor.m_dmin;
       distanceToGoal = m_simulator->GetDistanceFromRobotToGoal();
       trackWall = true;
-      return MoveAroundObstacle(sensor);
+      return MoveAroundObstacleAdjust(sensor);
 
     }
 
     //if the distance to the goal if really small, need to increase range of slope checking.
+    printf("distance %lf\n", m_simulator->GetDistanceFromRobotToGoal());
     if(m_simulator->GetDistanceFromRobotToGoal() < 2.0){
       if( ( goalSlope - 0.1 <= getSlope() && goalSlope + 0.1 >= getSlope())  && trackWall == true && distanceToGoal - 1 > m_simulator->GetDistanceFromRobotToGoal()){
         trackWall = false;
@@ -260,7 +262,7 @@ Move BugAlgorithms::Bug2(Sensor sensor)
 
       //check the movement result
       if(magnitude_new < magnitude_old){
-        return MoveAroundObstacle(sensor);
+        return MoveAroundObstacleAdjust(sensor);
       }
       //if nothing wrong then go ahead and move
       else{
@@ -271,7 +273,7 @@ Move BugAlgorithms::Bug2(Sensor sensor)
       //return MoveTowardsGoal();
     }
     else{
-      return MoveAroundObstacle(sensor);
+      return MoveAroundObstacleAdjust(sensor);
     }
   }
   //not on wall then move towards the goal
@@ -283,7 +285,24 @@ Move BugAlgorithms::Bug2(Sensor sensor)
 double BugAlgorithms::getSlope(){
         return (m_simulator->GetGoalCenterY() - m_simulator->GetRobotCenterY())/(m_simulator->GetGoalCenterX() - m_simulator->GetRobotCenterX());
 }
+Move BugAlgorithms::MoveAroundObstacleAdjust(Sensor sensor){
+  Move move = MoveAroundObstacle(sensor);
 
+  double diff = sensor.m_dmin - distanceToOb;
+
+  //calculates the vector from point to obstacle and then normalizes so its a unit vector then we multiply by the diff
+  //which is the magnitude that we want
+  Move vectorToObj = {sensor.m_xmin - m_simulator->GetRobotCenterX(),  sensor.m_ymin - m_simulator->GetRobotCenterY()};
+  double mag = sqrt((vectorToObj.m_dx*vectorToObj.m_dx) + (vectorToObj.m_dy*vectorToObj.m_dy));
+  vectorToObj.m_dx = (vectorToObj.m_dx/mag)*diff;
+  vectorToObj.m_dy = (vectorToObj.m_dy/mag)*diff;
+
+  //this is the calculating of the new vector by adding the two
+  move.m_dx = move.m_dx + vectorToObj.m_dx;
+  move.m_dy = move.m_dy + vectorToObj.m_dy;
+
+  return move;
+}
 Move BugAlgorithms::MoveAroundObstacle(Sensor sensor){
 /*Move oldD_min = {m_simulator -> GetRobotCenterX() - sensor.m_xmin, m_simulator -> GetRobotCenterY() - sensor.m_ymin};
    Move move_goal = MoveTowardsGoal();
