@@ -2,7 +2,7 @@
 #include <cmath>
 #include <cstdlib>
 #define BUMPERSIZE 0.8
-#define INNERSIZE 0.5
+#define INNERSIZE 0.2
 #define MOVESIZE 0.06
 
 BugAlgorithms::BugAlgorithms(Simulator * const simulator)
@@ -53,12 +53,15 @@ Move BugAlgorithms::Bug0(Sensor sensor){
                 double obsVectorY = sensor.m_ymin - m_simulator->GetRobotCenterY();
                 double magnitude = sqrt(obsVectorX * obsVectorX + obsVectorY * obsVectorY);
                 Move move = {(-obsVectorY/magnitude)*MOVESIZE, (obsVectorX/magnitude)*MOVESIZE};
-                if(magnitude_new < magnitude_old) { //always true...
+                if(magnitude_new < magnitude_old) {
 
                         return move;
                 }
                 else if(sensor.m_dmin>=INNERSIZE) {
                         return MoveTowardsGoal();
+                }
+                else{
+                  printf("im stuck ☠️\n");
                 }
         }
 
@@ -243,7 +246,7 @@ Move BugAlgorithms::Bug2(Sensor sensor)
     if( ( goalSlope - 0.005 <= getSlope() && goalSlope + 0.005 >= getSlope())  && trackWall == true && distanceToGoal - 1 > m_simulator->GetDistanceFromRobotToGoal()){
       trackWall = false;
       distanceToGoal = m_simulator->GetDistanceFromRobotToGoal();
-      
+
       //new stuff!!!!!!
       //checks to see if the movement will make you go closer to the obstacle, aka the obstacle is in the way
       Move oldD_min = {m_simulator -> GetRobotCenterX() - sensor.m_xmin, m_simulator -> GetRobotCenterY() - sensor.m_ymin};
@@ -254,7 +257,7 @@ Move BugAlgorithms::Bug2(Sensor sensor)
       newD_min.m_dy = oldD_min.m_dy + move_goal.m_dy;
       double magnitude_old = sqrt( oldD_min.m_dx * oldD_min.m_dx + oldD_min.m_dy * oldD_min.m_dy);
       double magnitude_new = sqrt(newD_min.m_dx * newD_min.m_dx + newD_min.m_dy * newD_min.m_dy);
-      
+
       //check the movement result
       if(magnitude_new < magnitude_old){
         return MoveAroundObstacle(sensor);
@@ -275,7 +278,6 @@ Move BugAlgorithms::Bug2(Sensor sensor)
   else{
     return MoveTowardsGoal();
   }
->>>>>>> Stashed changes
 
 }
 double BugAlgorithms::getSlope(){
