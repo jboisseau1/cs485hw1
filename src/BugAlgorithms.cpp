@@ -222,6 +222,7 @@ Move BugAlgorithms::Bug2(Sensor sensor)
   if(initial == false){
     goalSlope = getSlope();
   }
+  printf("initial slope %lf\n", goalSlope);
   initial = true;
   //check for hitting wall or if it's already tracking a wall
   if(sensor.m_dmin <= BUMPERSIZE || trackWall == true){
@@ -237,6 +238,7 @@ Move BugAlgorithms::Bug2(Sensor sensor)
     //if the distance to the goal if really small, need to increase range of slope checking.
     printf("distance %lf\n", m_simulator->GetDistanceFromRobotToGoal());
     if(m_simulator->GetDistanceFromRobotToGoal() < 2.0){
+      printf("fuck one\n");
       if( ( goalSlope - 0.1 <= getSlope() && goalSlope + 0.1 >= getSlope())  && trackWall == true && distanceToGoal - 1 > m_simulator->GetDistanceFromRobotToGoal()){
         trackWall = false;
         distanceToGoal = m_simulator->GetDistanceFromRobotToGoal();
@@ -245,11 +247,13 @@ Move BugAlgorithms::Bug2(Sensor sensor)
       }
     }
     //check to see if we have matched the slope to get to the goal
-    if( ( goalSlope - 0.005 <= getSlope() && goalSlope + 0.005 >= getSlope())  && trackWall == true && distanceToGoal - 1 > m_simulator->GetDistanceFromRobotToGoal()){
+    printf("goal slope %lf\n", getSlope());
+    if( ( goalSlope - 0.02 <= getSlope() && goalSlope + 0.02 >= getSlope())  && trackWall == true && distanceToGoal - 1 > m_simulator->GetDistanceFromRobotToGoal()){
+      printf("fuck me two\n" );
       trackWall = false;
       distanceToGoal = m_simulator->GetDistanceFromRobotToGoal();
 
-      //new stuff!!!!!!
+      /*//new stuff!!!!!!
       //checks to see if the movement will make you go closer to the obstacle, aka the obstacle is in the way
       Move oldD_min = {m_simulator -> GetRobotCenterX() - sensor.m_xmin, m_simulator -> GetRobotCenterY() - sensor.m_ymin};
       Move move_goal = MoveTowardsGoal();
@@ -270,7 +274,7 @@ Move BugAlgorithms::Bug2(Sensor sensor)
       }
       //end new stuff//*/
 
-      //return MoveTowardsGoal();
+      return MoveTowardsGoal();
     }
     else{
       return MoveAroundObstacleAdjust(sensor);
@@ -286,6 +290,7 @@ double BugAlgorithms::getSlope(){
         return (m_simulator->GetGoalCenterY() - m_simulator->GetRobotCenterY())/(m_simulator->GetGoalCenterX() - m_simulator->GetRobotCenterX());
 }
 Move BugAlgorithms::MoveAroundObstacleAdjust(Sensor sensor){
+  printf("In here\n");
   Move move = MoveAroundObstacle(sensor);
 
   double diff = sensor.m_dmin - distanceToOb;
