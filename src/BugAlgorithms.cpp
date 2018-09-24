@@ -214,78 +214,68 @@ Move BugAlgorithms::Bug1(Sensor sensor)
 
 Move BugAlgorithms::Bug2(Sensor sensor)
 {
-        //getchar(); //*****this makes it wait till enter is pressed
-        if(initial == false) {
-                goalSlope = getSlope();
-                printf("goal slope%lf\n", goalSlope);
-        }
-        initial = true;
-        //add your implementation
-        //Move move ={0,0};
-        /*if(trackWall == false){
-           goalSlope = abs(getSlope());
-           }*/
-        //printf("new goalSlope %lf\n", abs(getSlope()));
-        //printf("goalSlope %lf\n", goalSlope);
-        if(sensor.m_dmin <= BUMPERSIZE || trackWall == true) {
-                if(trackWall == false) {
-                        //initialSensor.m_dmin = sensor.m_dmin;
-                        //initialSensor.m_xmin = sensor.m_xmin;
-                        //initialSensor.m_ymin = sensor.m_ymin;
-                        distanceToGoal = m_simulator->GetDistanceFromRobotToGoal();
-                        printf("set initial \n");
-                        trackWall = true;
-                        return MoveAroundObstacle(sensor);
+  //getchar(); //*****this makes it wait till enter is pressed
+  //make initial slope to goal
+  if(initial == false){
+    goalSlope = getSlope();
+  }
+  initial = true;
+  //check for hitting wall or if it's already tracking a wall
+  if(sensor.m_dmin <= BUMPERSIZE || trackWall == true){
+    //if first hit then set up initial values
+    if(trackWall == false){
+      distanceToGoal = m_simulator->GetDistanceFromRobotToGoal();
+      trackWall = true;
+      return MoveAroundObstacle(sensor);
 
-                }
+    }
 
-                /*trackWall = true;
-                   printf("goalSlope %lf\n", goalSlope);
-                   printf("new goalSlope %lf\n", abs(getSlope()));
-                   printf("initial %lf\n", initialSensor.m_dmin);*/
-                printf("new goalSlope %lf\n", getSlope());
-                printf("goalSlope %lf\n", goalSlope);
-                printf("%lf\n", m_simulator->GetDistanceFromRobotToGoal());//*/
-                printf("trackWall %d\n", trackWall);
-                if(m_simulator->GetDistanceFromRobotToGoal() < 2.0) {
-                        if( ( goalSlope - 0.1 <= getSlope() && goalSlope + 0.1 >= getSlope())  && trackWall == true /*initialSensor.m_dmin != 0.0*/ && distanceToGoal - 1 > m_simulator->GetDistanceFromRobotToGoal()) {
-                                printf("In here extra\n" );
-                                trackWall = false;
-                                //initialSensor.m_dmin = 0;
-                                distanceToGoal = m_simulator->GetDistanceFromRobotToGoal();
-                                return MoveTowardsGoal();
-                        }
-                }
-                if( ( goalSlope - 0.05 <= getSlope() && goalSlope + 0.05 >= getSlope())  && trackWall == true /*initialSensor.m_dmin != 0.0*/ && distanceToGoal - 1 > m_simulator->GetDistanceFromRobotToGoal()) {
-                        printf("In here\n" );
-                        trackWall = false;
-                        initialSensor.m_dmin = 0;
-                        distanceToGoal = m_simulator->GetDistanceFromRobotToGoal();
-                        return MoveTowardsGoal();
-                }
-                /*else if((goalSlope - 0.005 <= abs(getSlope()) && goalSlope + 0.005 >= abs(getSlope()))){
-                   printf("slope good\n");
-                   if(initialSensor.m_dmin != 0.0){
-                    printf("sensor good\n");
-                    if(distanceToGoal > m_simulator->GetDistanceFromRobotToGoal()){
-                      printf("distanceToGoal good\n");
-                      trackWall = false;
-                      return MoveTowardsGoal();
-                    }
-                    trackWall = false;
-                    return MoveTowardsGoal();
-                   }
-                   return MoveTowardsGoal();
-                   }*/
-                else{
-                        printf("move around\n" );
-                        return MoveAroundObstacle(sensor);
-                }
-        }
-        else{
-                printf("Moving towards goal\n");
-                return MoveTowardsGoal();
-        }
+    //if the distance to the goal if really small, need to increase range of slope checking.
+    if(m_simulator->GetDistanceFromRobotToGoal() < 2.0){
+      if( ( goalSlope - 0.1 <= getSlope() && goalSlope + 0.1 >= getSlope())  && trackWall == true && distanceToGoal - 1 > m_simulator->GetDistanceFromRobotToGoal()){
+        trackWall = false;
+        distanceToGoal = m_simulator->GetDistanceFromRobotToGoal();
+
+        return MoveTowardsGoal();
+      }
+    }
+    //check to see if we have matched the slope to get to the goal
+    if( ( goalSlope - 0.005 <= getSlope() && goalSlope + 0.005 >= getSlope())  && trackWall == true && distanceToGoal - 1 > m_simulator->GetDistanceFromRobotToGoal()){
+      trackWall = false;
+      distanceToGoal = m_simulator->GetDistanceFromRobotToGoal();
+      
+      //new stuff!!!!!!
+      //checks to see if the movement will make you go closer to the obstacle, aka the obstacle is in the way
+      Move oldD_min = {m_simulator -> GetRobotCenterX() - sensor.m_xmin, m_simulator -> GetRobotCenterY() - sensor.m_ymin};
+      Move move_goal = MoveTowardsGoal();
+      Move newD_min = {0,0};
+
+      newD_min.m_dx = oldD_min.m_dx + move_goal.m_dx;
+      newD_min.m_dy = oldD_min.m_dy + move_goal.m_dy;
+      double magnitude_old = sqrt( oldD_min.m_dx * oldD_min.m_dx + oldD_min.m_dy * oldD_min.m_dy);
+      double magnitude_new = sqrt(newD_min.m_dx * newD_min.m_dx + newD_min.m_dy * newD_min.m_dy);
+      
+      //check the movement result
+      if(magnitude_new < magnitude_old){
+        return MoveAroundObstacle(sensor);
+      }
+      //if nothing wrong then go ahead and move
+      else{
+        return MoveTowardsGoal();
+      }
+      //end new stuff//*/
+
+      //return MoveTowardsGoal();
+    }
+    else{
+      return MoveAroundObstacle(sensor);
+    }
+  }
+  //not on wall then move towards the goal
+  else{
+    return MoveTowardsGoal();
+  }
+>>>>>>> Stashed changes
 
 }
 double BugAlgorithms::getSlope(){
