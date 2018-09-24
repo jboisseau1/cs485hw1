@@ -253,7 +253,7 @@ Move BugAlgorithms::Bug2(Sensor sensor)
       trackWall = false;
       distanceToGoal = m_simulator->GetDistanceFromRobotToGoal();
 
-      /*//new stuff!!!!!!
+      //new stuff!!!!!!
       //checks to see if the movement will make you go closer to the obstacle, aka the obstacle is in the way
       Move oldD_min = {m_simulator -> GetRobotCenterX() - sensor.m_xmin, m_simulator -> GetRobotCenterY() - sensor.m_ymin};
       Move move_goal = MoveTowardsGoal();
@@ -274,7 +274,7 @@ Move BugAlgorithms::Bug2(Sensor sensor)
       }
       //end new stuff//*/
 
-      return MoveTowardsGoal();
+      //return MoveTowardsGoal();
     }
     else{
       return MoveAroundObstacleAdjust(sensor);
